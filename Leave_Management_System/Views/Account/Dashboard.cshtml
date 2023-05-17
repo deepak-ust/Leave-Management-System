@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Leave_Management_System.Data.Models.EmployeeLeaveBalance>
+@{
+    if (User.IsInRole("Admin"))
+    {
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <a href="@Url.Action("Index", "Employee")">
+                    <div class="card border-primary text-black-50">
+                        <div class="card-body">
+                            <h5 class="card-title">Employees</h5>
+                            <p class="card-text">@ViewBag.EmployeesCount</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 mb-4">
+                <a href="@Url.Action("Index", "LeaveType")">
+                    <div class="card border-success text-black-50">
+                        <div class="card-body">
+                            <h5 class="card-title">Leave Types</h5>
+                            <p class="card-text">@ViewBag.LeaveTypesCount</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 mb-4">
+                <a href="@Url.Action("Index", "Holiday")">
+                    <div class="card border-info text-black-50">
+                        <div class="card-body">
+                            <h5 class="card-title">Holidays</h5>
+                            <p class="card-text">@ViewBag.HolidaysCount</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    }
+    if (User.IsInRole("Manager"))
+    {
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                @if (ViewBag.TeamMembers > 0)
+                {
+                    <a href="@Url.Action("ManagerIndex", "Employee")">
+                        <div class="card border-primary text-black-50">
+                        <div class="card-body">
+                            <h5 class="card-title">Subordinates</h5>
+                            <p class="card-text">@ViewBag.TeamMembers</p>
+                        </div>
+                    </div>
+                </a>
+                }
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border-info text-black-50">
+                    <div class="card-body">
+                        <h5 class="card-title">Request Status</h5>
+                        <canvas id="requestChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    if (User.IsInRole("Employee"))
+    {
+        <div class="row">
+            @for (var i = 0; i < Model.Count(); i++)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card border-@ViewBag.Colors[i] text-black-50">
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.LeaveTypes[i]</h5>
+                            <p class="card-text">@ViewBag.Balances[i]</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+<script>
+    var ctx = document.getElementById('requestChart').getContext('2d');
+    var requestChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Pending', 'Approved', 'Rejected'],
+            datasets: [{
+                data: [@ViewBag.PendingCount, @ViewBag.ApprovedCount, @ViewBag.RejectedCount],
+                backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
+            }]
+        },
+        options: {
+            responsive: true,
+            onClick: function (event, elements) {
+                if (elements.length) {
+                    var status = event.chart.data.labels[elements[0].index];
+                    if (status === 'Pending') {
+                        window.location.href = '/LeaveRequest/Index';
+                    } else if (status === 'Approved') {
+                        window.location.href = '/LeaveRequest/ApprovedRequests';
+                    } else if (status === 'Rejected') {
+                        window.location.href = '/LeaveRequest/RejectedRequests';
+                    }
+                }
+            }
+        }
+    });
+</script>

@@ -1,0 +1,32 @@
+﻿@model Leave_Management_System.Data.Models.LeaveRequest
+@{
+    ViewData["Title"] = "Leave Request";
+}
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="ApplyCompensatory" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group" hidden="hidden">
+        <label asp-for="LeaveType" class="control-label"></label>
+        <input asp-for="LeaveType" class="form-control" value="Compensatory Leave" />
+        <span asp-validation-for="LeaveType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+                <label asp-for="StartDate" class="control-label" id="startDateName">Date</label>
+                <input asp-for="StartDate" class="form-control" type="date" id="startdate" min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                       max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+                <input type="submit" value="Request" class="btn btn-primary" />
+    </div>
+   </form>
+  </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script>
+        </script>
+    }
+}

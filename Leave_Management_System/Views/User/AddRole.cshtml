@@ -1,0 +1,48 @@
+﻿@model Leave_Management_System.Data.Models.UserRole
+@{
+    ViewData["Title"] = "Create";
+}
+<h1>Add Role</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+<form asp-action="AssignRole">
+    <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+    <div class="form-group">
+        <label asp-for="Role" class="control-label"></label>
+        <select asp-for="RoleId">
+                    <option value="">--Select Role--</option>
+                    <option value=1>Admin</option>
+                    <option value=2>Manager</option>
+                    <option value=3>Employee</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Assign Role" class="btn btn-outline-primary"/>
+                <a class="btn btn-outline-secondary" asp-action="ViewRoles" asp-route-userId="@Model.UserId">View Roles</a>
+    </div>
+</form>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script>
+            //$(document).ready(function () {
+            //    $('#admin, #manager, #employee').change(function () {
+            //        $.ajax({
+            //            type: "POST",
+            //            url: "/User/AssignRole",
+            //            data: $("#assignForm").serialize(),
+            //            success: function (response) {
+            //                console.log(response);
+            //            },
+            //            error: function (xhr, status, error) {
+            //                console.log(xhr.responseText);
+            //            }
+            //        });
+            //    });
+            //});
+        </script>
+    }
+}

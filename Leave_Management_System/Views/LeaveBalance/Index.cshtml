@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Leave_Management_System.Data.Models.EmployeeLeaveBalance>
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>Leave Balances</h1>
+<hr />
+<table id="tblData" class="table">
+    <thead>
+        <tr style="text-align: center">
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(var i= 0;i<Model.Count();i++)
+        {
+            <tr style="text-align: center">
+                <td>
+                    @ViewBag.LeaveTypes[i]
+                </td>
+                <td>
+                    @ViewBag.Balances[i]
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+Carried Forward Leaves From Previous Year: @ViewBag.CarryForward
+@section Scripts{
+    <script>
+    </script>
+}

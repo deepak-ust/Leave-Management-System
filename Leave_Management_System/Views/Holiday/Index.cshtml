@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Leave_Management_System.Data.Models.Holiday>
+<h1>Holiday Calendar</h1>
+@{
+    bool isAdmin = User.IsInRole("Admin");
+    if (isAdmin)
+    {
+        <p>
+            <a asp-action="Create" class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Create New Holiday</a>
+        </p>
+    }
+}
+<div id="calendar"></div>
+@section scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var admin=@isAdmin.ToString().ToLower();
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: [
+        @foreach (var item in Model)
+        {
+            @:{ title: '@item.Name', start: '@item.Date.ToString("yyyy-MM-dd")', id: '@item.Id' },
+        }{
+                        title: 'Holiday',
+                    startRecur: '@DateTime.Now.Subtract(DateTime.Now.AddYears(1)).ToString()',
+                        endRecur: '@DateTime.Now.AddYears(1).ToString()',
+                        daysOfWeek: [6,0],
+                        rendering: 'background',
+                        color: 'red',
+                        editable:false
+                    }
+                        ],
+                headerToolbar: {
+                    start: 'prev,next today',
+                    center: 'title',
+                    end: 'prevYear,dayGridMonth,timeGridWeek,timeGridDay,nextYear'
+                },
+                editable: admin,
+                selectable: admin,
+                eventClick: function (info) {
+                    if (((info.event.title === "Holiday") && (info.event.start.getDay() === 0 || info.event.start.getDay() === 6))||admin===false) {
+                        info.jsEvent.preventDefault();
+                        return false;
+                    }
+                    window.location.href = '/Holiday/Edit/' + info.event.id;
+                },
+                select: function (info) {
+                    var date = info.startStr;
+                        window.location.href = '/Holiday/Create?date=' + date;
+                },
+                        buttonText: {
+                    today: 'Today',
+                    dayGridMonth: 'Month',
+                    timeGridWeek: 'Week',
+                    timeGridDay: 'Day'
+                }
+            });
+            calendar.render();
+        });
+    </script>
+}

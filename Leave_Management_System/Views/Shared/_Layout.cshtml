@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Leave_Management_System</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Leave_Management_System.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+</head>
+<body>
+    <header>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div id="wrapper">
+                <div class="overlay"></div>
+                <!-- Sidebar -->
+                <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
+                    <ul class="nav sidebar-nav">
+                        <div class="sidebar-header">
+                            <div class="sidebar-brand">
+                                <a href=""><i class="fa fa-user-circle" aria-hidden="true"></i>&nbsp @User.Identity.Name</a>
+                            </div>
+                        </div>
+                        <li><a href="/Account/Dashboard">Home</a></li>
+                        @{
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li><a href="/LeaveType/Index">Leave Types</a></li>
+                                <li><a href="/User/Index">User Registration</a></li>
+                            }
+                            if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                            {
+                                <li><a href="/Employee/Index">Employees</a></li>
+                                <li><a href="/LeaveRequest/Index">LeaveRequests</a></li>
+                            }
+                                <li><a href="/LeaveRequest/Create">Apply for leave</a></li>
+                                <li><a href="/LeaveRequest/YourRequests">Your Requests</a></li>
+                                <li><a href="/LeaveBalance/Index">Leave Balance</a></li>
+                                <li><a href="/LeaveRequest/ApplyCompensatory">Comp off Request</a></li>
+                        }
+                        <li><a href="/Holiday/Index">Holiday Calendar</a></li>
+                        <li><a href="/Account/ResetPassword">Reset Password</a></li>
+                        <li style="margin-top:15px">
+                            <form asp-controller="Account" asp-action="Logout">
+                                <div class="form-group">
+                                    <input type="submit" value="Logout" class="btn btn-danger btn-block" />
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /#sidebar-wrapper -->
+                <!-- Page Content -->
+                <div id="page-content-wrapper">
+                    <button type="button" class="hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
+                        <span class="hamb-top"></span>
+                        <span class="hamb-middle"></span>
+                        <span class="hamb-bottom"></span>
+                    </button>
+                </div>
+                <!-- /#page-content-wrapper -->
+            </div>
+        }
+        else
+        {
+            <div style="text-align:center"><h1>Leave Management System</h1></div>
+        }
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="modifiedfooter">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    &copy; 2023 - Leave_Management_System
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js'></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

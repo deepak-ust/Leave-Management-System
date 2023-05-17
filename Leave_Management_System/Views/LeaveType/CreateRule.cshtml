@@ -1,0 +1,66 @@
+﻿@model Leave_Management_System.Data.Models.Rule
+@{
+    ViewData["Title"] = "Create";
+}
+<h1>Create Rule</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="CreateRule">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="LeaveTypeId" value=@ViewBag.LeaveTypeId />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Band" class="control-label"></label>
+                <select asp-for="Band" class="form-control" id="band">
+                    <option value="">--Select Band--</option>
+                    <option value=0>A</option>
+                    <option value=1>B</option>
+                    <option value=2>C</option>
+                </select>
+                <span asp-validation-for="Band" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DefaultBalance" class="control-label"></label>
+                <input asp-for="DefaultBalance" class="form-control" />
+                <span asp-validation-for="DefaultBalance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Credit" class="control-label"></label>
+                <input asp-for="Credit" class="form-control" />
+                <span asp-validation-for="Credit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LeaveCreditFrequency" class="control-label"></label>
+                <select asp-for="LeaveCreditFrequency" class="form-control">
+                    <option value="">--Select Leave Type--</option>
+                    <option value=1>Monthly</option>
+                    <option value=6>Half-Yearly</option>
+                    <option value=12>Yearly</option>
+                </select>
+                <span asp-validation-for="LeaveCreditFrequency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AllowedLeaves" class="control-label"></label>
+                <input asp-for="AllowedLeaves" class="form-control" />
+                <span asp-validation-for="AllowedLeaves" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsApplicable" class="control-label"></label>
+                <input asp-for="IsApplicable" type="checkbox" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" /> <a class="btn btn-outline-secondary" asp-action="Rules" asp-route-id="@ViewBag.LeaveTypeId">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
