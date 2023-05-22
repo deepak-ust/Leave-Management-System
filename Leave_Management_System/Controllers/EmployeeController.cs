@@ -63,7 +63,15 @@ namespace Leave_Management_System.Controllers
                 }
                 var employee = _employeeService.AddEmployee(employeeObj);
                 var leavetypes = _leaveTypeService.GetLeaveTypes().ToList();
-                _leaveBalanceService.AddLeaveBalanceToEmployee(employee, leavetypes);
+                 try
+                {
+                    _leaveBalanceService.AddLeaveBalanceToEmployee(employee, leavetypes);
+                }
+                catch
+                {
+                    ModelState.AddModelError(string.Empty, "Employee added, some leave rule/rules has not been added to the selected band, please check leave type rules.");
+                    return View(employeeObj);
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
